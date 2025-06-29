@@ -1,17 +1,19 @@
-from typing import Optional, re
+import re
+from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
 from domain.player import Player
 from domain.record import Record
 from domain.enums import Enums
+from domain.result_from_kishi import ResultFromKishi
 
 
 def parse_enum(value: str, enum_class):
     for e in enum_class:
         if e.value in value:
             return e
-    return list(enum_class)[-1]  # デフォルト（OTHERやUNKNOWN）
+    return list(enum_class)[-1]
 
 
 def extract_title_and_danni(soup) -> tuple[list[str], Optional[Enums.Danni]]:
@@ -24,16 +26,17 @@ def extract_title_and_danni(soup) -> tuple[list[str], Optional[Enums.Danni]]:
 
     text = heading.text.strip()
 
+    title_values = [e.value for e in Enums.Title]
+
     # 判定
-    if any(title in text for title in Enums.Title):
-        import re
-        raw_titles = re.sub(r"[（）]", "・", text)  # 丸括弧を区切りに変換
-        title_list = [t for t in raw_titles.split("・") if t in Enums.Title]
+    if any(val in text for val in title_values):
+        raw_titles = re.sub(r"[（）]", "・", text)
+        title_list = [t for t in raw_titles.split("・") if t in title_values]
         return title_list, Enums.Danni.DAN9
     else:
-        for label, enum_val in Enums.Title:
-            if enum_val in text:
-                return [], enum_val
+        for danni_enum in Enums.Danni:
+            if danni_enum.value in text:
+                return [], danni_enum
 
     return [], None
 
@@ -42,7 +45,7 @@ def extract_record(soup: BeautifulSoup) -> Record:
     record_table = soup.select_one("h3:-soup-contains('棋士成績') + div table")
     record_rows = record_table.select("tr") if record_table else []
 
-    wins = loses = total_ranking = wins_ranking = winning_rate_ranking = 0
+    wins = loses = consecutive_wins = total_ranking = consecutive_wins_ranking = wins_ranking = winning_rate_ranking = 0
 
     for row in record_rows:
         th = row.find("th")
@@ -65,20 +68,27 @@ def extract_record(soup: BeautifulSoup) -> Record:
             match = re.search(r"(\d+)位", text)
             if match:
                 winning_rate_ranking = int(match.group(1))
+        elif "対局数ランキング" in label:
+            match = re.search(r"(\d+)位", text)
+            if match:
+                total_ranking = int(match.group(1))
         elif "連勝ランキング" in label:
             match = re.search(r"(\d+)位", text)
             if match:
-                winning_rate_ranking = int(match.group(1))
-
+                consecutive_wins_ranking = int(match.group(1))
+            match = re.search(r"(\d+)連勝", text)
+            if match:
+                consecutive_wins = int(match.group(1))
 
     return Record(
         wins=wins,
         loses=loses,
-        total_ranking=wins + loses,
+        consecutive_wins=consecutive_wins,
+        total_ranking=total_ranking,
         wins_ranking=wins_ranking,
-        winning_rate_ranking=winning_rate_ranking
+        winning_rate_ranking=winning_rate_ranking,
+        consecutive_wins_ranking=consecutive_wins_ranking,
     )
-
 
 
 def parse_player_detail(url: str) -> Player:
@@ -113,12 +123,27 @@ def parse_player_detail(url: str) -> Player:
     for row in result_rows:
         cols = row.find_all("td")
         if len(cols) == 4:
-            result_from_kishi.append({
-                "date": cols[0].text.strip(),
-                "result": cols[1].text.strip(),
-                "opponent": cols[2].text.strip(),
-                "match": cols[3].text.strip(),
-            })
+            # 対局相手の棋士番号をURLから抽出
+            opponent_link = cols[2].find("a")["href"]
+            opponent_match = re.search(r"/player/pro/(\d+)\.html", opponent_link)
+            opponent_number = int(opponent_match.group(1)) if opponent_match else None
+            symbol = cols[1].text.strip()
+            result_status = Enums.ResultStatus.from_symbol(symbol)
+
+            # 対局種別をURLから判定
+            category_symbol = cols[3].find("a")["href"].strip("/").split("/")[-1]
+            game_category = Enums.GameCategory.from_symbol(category_symbol)
+
+            result_from_kishi.append(
+                ResultFromKishi(
+                    game_name=cols[3].text.strip(),
+                    game_category=game_category,
+                    opponent_number=opponent_number,
+                    opponent_name=cols[2].text.strip(),
+                    result_status=result_status,
+                    date=cols[0].text.strip()
+                )
+            )
 
     return Player(
         id=kishi_number,
@@ -136,10 +161,10 @@ def parse_player_detail(url: str) -> Player:
         junisen_class=parse_enum(junisen_text, Enums.JunisenClass),
         danni=danni,
         title=title,
-        affiliation=None,
-        playing_style=None,
+        affiliation=Enums.Affiliation.NONE,
+        playing_style=Enums.PlayingStyle.NONE,
         player_category=Enums.PlayerCategory.KISHI,
         is_active=True,
         result_from_kishi=result_from_kishi,
-        record=Record()
+        record=extract_record(soup)
     )

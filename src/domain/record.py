@@ -1,11 +1,13 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class Record:
-    wins: int
-    loses: int
-    wins_ranking: int
-    consecutive_wins: int
-    consecutive_wins_ranking: int
-    winning_rate_ranking: int
+    wins: Optional[int]
+    loses: Optional[int]
+    consecutive_wins: Optional[int]
+    total_ranking: Optional[int]
+    wins_ranking: Optional[int]
+    consecutive_wins_ranking: Optional[int]
+    winning_rate_ranking: Optional[int]

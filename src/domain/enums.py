@@ -3,12 +3,12 @@ from enum import Enum
 
 class Enums:
     class Title(Enum):
-        RYUOH = "竜王",
-        MEIJIN = "名人",
-        EIOH = "叡王",
-        OUI = "王位",
-        KIOH = "棋王",
-        OUSHO = "王将",
+        RYUOH = "竜王"
+        MEIJIN = "名人"
+        EIOH = "叡王"
+        OUI = "王位"
+        KIOH = "棋王"
+        OUSHO = "王将"
         OUZA = "王座"
         KISEI = "棋聖"
 
@@ -44,37 +44,77 @@ class Enums:
     class Affiliation(Enum):
         KANTOU = "関東"
         KANSAI = "関西"
+        NONE = "なし"
 
     class PlayingStyle(Enum):
         IBISHA = "居飛車"
         HURIBISHA = "振り飛車"
         DUAL = "両刀"
+        NONE = "なし"
 
     class PlayerCategory(Enum):
         KISHI = "棋士"
         JORYU = "女流棋士"
 
     class GameCategory(Enum):
-        JUNI = "順位戦・名人戦",
-        RYUOH = "竜王戦",
-        EIOH = "叡王戦",
-        OUI = "王位戦",
-        OUZA = "王座戦",
-        KISEI = "棋聖戦",
-        KIOH = "棋王戦",
-        ASAHI_CUP = "朝日杯戦",
-        GINGA = "銀河戦",
-        NHK = "NHK杯戦",
-        JT = "日本シリーズ",
-        TATSUZIN = "達人戦",
-        SHINJINOH = "新人王戦",
-        KAKOGAWA = "加古川青流戦",
-        ABEMA = "ABEMAトーナメント",
-        SUNTORY = "東西対抗戦"
+        JUNI = ("順位戦・名人戦", "junni")
+        RYUOH = ("竜王戦", "ryuuou")
+        EIOH = ("叡王戦", "eiou")
+        OUI = ("王位戦", "oui")
+        OUZA = ("王座戦", "ouza")
+        KISEI = ("棋聖戦", "kisei")
+        KIOH = ("棋王戦", "kiou")
+        ASAHI_CUP = ("朝日杯戦", "asahi_cup")
+        GINGA = ("銀河戦", "ginga")
+        NHK = ("NHK杯戦", "nhk")
+        JT = ("日本シリーズ", "jt")
+        TATSUZIN = ("達人戦", "tatsujinsen")
+        SHINJINOH = ("新人王戦", "shinjin")
+        KAKOGAWA = ("加古川青流戦", "kakogawa")
+        ABEMA = ("ABEMAトーナメント", "abematv")
+        SUNTORY = ("東西対抗戦", "suntory")
+        OTHER = ("その他", "")
+
+        def __init__(self, label: str, symbol: str):
+            self.label = label
+            self.symbol = symbol
+
+        @classmethod
+        def from_symbol(cls, symbol: str):
+            for status in cls:
+                if status.symbol == symbol:
+                    return status
+            return cls.OTHER
+
+        @classmethod
+        def from_label(cls, label: str):
+            for status in cls:
+                if status.label == label:
+                    return status
+            return cls.OTHER
+
 
     class ResultStatus(Enum):
-        WIN = "勝ち",
-        DEFEAT = "負け",
-        BYE_WIN = "不戦勝",
-        BYE_DEFEAT = "不戦敗",
-        TBD = "未実施"
+        WIN = ("勝ち", "○")
+        DEFEAT = ("負け", "●")
+        BYE_WIN = ("不戦勝", "□")
+        BYE_DEFEAT = ("不戦敗", "■")
+        TBD = ("未実施", "")
+
+        def __init__(self, label: str, symbol: str):
+            self.label = label
+            self.symbol = symbol
+
+        @classmethod
+        def from_symbol(cls, symbol: str):
+            for status in cls:
+                if status.symbol == symbol:
+                    return status
+            return cls.TBD
+
+        @classmethod
+        def from_label(cls, label: str):
+            for status in cls:
+                if status.label == label:
+                    return status
+            return cls.TBD
