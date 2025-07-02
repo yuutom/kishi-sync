@@ -16,7 +16,7 @@ def parse_enum(value: str, enum_class):
     return list(enum_class)[-1]
 
 
-def extract_title_and_danni(soup) -> tuple[list[str], Optional[Enums.Danni]]:
+def extract_title_and_danni(soup) -> tuple[list[Enums.Title], Optional[Enums.Danni]]:
     """
     タイトルと段位を取得して title, danni を返す
     """
@@ -123,16 +123,18 @@ def parse_player_detail(url: str) -> Player:
     for row in result_rows:
         cols = row.find_all("td")
         if len(cols) == 4:
-            # 対局相手の棋士番号をURLから抽出
-            opponent_link = cols[2].find("a")["href"]
-            opponent_match = re.search(r"/player/pro/(\d+)\.html", opponent_link)
+            opponent_link = cols[2].find("a")["href"] if cols[2].find("a") else None
+            opponent_match = re.search(r"/player/pro/(\d+)\.html", opponent_link) if opponent_link else None
             opponent_number = int(opponent_match.group(1)) if opponent_match else None
             symbol = cols[1].text.strip()
             result_status = Enums.ResultStatus.from_symbol(symbol)
 
-            # 対局種別をURLから判定
-            category_symbol = cols[3].find("a")["href"].strip("/").split("/")[-1]
-            game_category = Enums.GameCategory.from_symbol(category_symbol)
+            a_tag = cols[3].find("a")
+            if a_tag and a_tag.get("href"):
+                category_symbol = a_tag["href"].strip("/").split("/")[-1]
+                game_category = Enums.GameCategory.from_symbol(category_symbol)
+            else:
+                game_category = Enums.GameCategory.OTHER
 
             result_from_kishi.append(
                 ResultFromKishi(
@@ -144,6 +146,7 @@ def parse_player_detail(url: str) -> Player:
                     date=cols[0].text.strip()
                 )
             )
+    print(name_kana)
 
     return Player(
         id=kishi_number,

@@ -33,13 +33,13 @@ class Enums:
         NONE = "なし"
 
     class Danni(Enum):
-        NONE = "なし"
         DAN4 = "四段"
         DAN5 = "五段"
         DAN6 = "六段"
         DAN7 = "七段"
         DAN8 = "八段"
         DAN9 = "九段"
+        NONE = "なし"
 
     class Affiliation(Enum):
         KANTOU = "関東"
@@ -47,10 +47,10 @@ class Enums:
         NONE = "なし"
 
     class PlayingStyle(Enum):
+        NONE = "なし"
         IBISHA = "居飛車"
         HURIBISHA = "振り飛車"
         DUAL = "両刀"
-        NONE = "なし"
 
     class PlayerCategory(Enum):
         KISHI = "棋士"
