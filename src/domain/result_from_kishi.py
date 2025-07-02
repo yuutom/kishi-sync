@@ -10,4 +10,4 @@ class ResultFromKishi:
     opponent_number: int
     opponent_name: str
     result_status: Enums.ResultStatus
-    date: str
+    date: list[str]

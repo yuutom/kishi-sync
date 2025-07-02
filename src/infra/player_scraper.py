@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from typing import Optional
 
 import requests
@@ -91,6 +92,48 @@ def extract_record(soup: BeautifulSoup) -> Record:
     )
 
 
+def normalize_match_date_list(raw: str) -> list[str]:
+    dates = []
+
+    # 一般形式：2025/5/29,30 など
+    match = re.match(r"(\d{4})/(\d{1,2})/(\d{1,2})(?:,(\d{1,2})(?:/(\d{1,2}))?)?", raw)
+    if match:
+        year = int(match.group(1))
+        month = int(match.group(2))
+        day1 = int(match.group(3))
+        day2 = match.group(4)
+        month2 = match.group(5)
+
+        # 最初の日付
+        try:
+            date1 = datetime(year, month, day1).strftime("%Y-%m-%d")
+            dates.append(date1)
+        except ValueError:
+            pass  # 無効な日付はスキップ
+
+        # 2日目があれば
+        if day2:
+            m2 = int(month2) if month2 else month  # 2日目の月が省略されている場合は同じ月
+            try:
+                date2 = datetime(year, m2, int(day2)).strftime("%Y-%m-%d")
+                dates.append(date2)
+            except ValueError:
+                pass
+
+        return dates
+
+    # 単一日付形式：2025/6/18
+    match = re.match(r"(\d{4})/(\d{1,2})/(\d{1,2})", raw)
+    if match:
+        try:
+            date = datetime(int(match.group(1)), int(match.group(2)), int(match.group(3)))
+            return [date.strftime("%Y-%m-%d")]
+        except ValueError:
+            return []
+
+    return [raw]
+
+
 def parse_player_detail(url: str) -> Player:
     res = requests.get(url)
     soup = BeautifulSoup(res.content, "html.parser")
@@ -106,6 +149,10 @@ def parse_player_detail(url: str) -> Player:
 
     kishi_number = int(find_td("棋士番号"))
     birth_date = find_td("生年月日")
+    match = re.search(r"(\d{4})年(\d{1,2})月(\d{1,2})日", birth_date)
+    if match:
+        year, month, day = match.groups()
+        birth_date = f"{int(year):04d}-{int(month):02d}-{int(day):02d}"
     birth_place = find_td("出身地")
     master = find_td("師匠")
     ryuohsen_text = find_td("竜王戦")
@@ -143,7 +190,7 @@ def parse_player_detail(url: str) -> Player:
                     opponent_number=opponent_number,
                     opponent_name=cols[2].text.strip(),
                     result_status=result_status,
-                    date=cols[0].text.strip()
+                    date=normalize_match_date_list(cols[0].text.strip())
                 )
             )
     print(name_kana)
