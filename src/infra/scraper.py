@@ -31,7 +31,7 @@ def extract_title_and_danni(soup) -> tuple[list[str], Optional[Enums.Danni]]:
     # 判定
     if any(val in text for val in title_values):
         raw_titles = re.sub(r"[（）]", "・", text)
-        title_list = [t for t in raw_titles.split("・") if t in title_values]
+        title_list = [parse_enum(t, Enums.Title) for t in raw_titles.split("・") if t in title_values]
         return title_list, Enums.Danni.DAN9
     else:
         for danni_enum in Enums.Danni:

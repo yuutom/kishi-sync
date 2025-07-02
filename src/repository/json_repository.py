@@ -2,7 +2,7 @@ import json
 from typing import List
 
 from domain.player import Player
-from repository.base import PlayerRepository
+from repository.base import PlayerRepository, serialize_dataclass
 
 
 class JSONPlayerRepository(PlayerRepository):
@@ -11,4 +11,9 @@ class JSONPlayerRepository(PlayerRepository):
 
     def save(self, players: List[Player]) -> None:
         with open(self.output_path, "w", encoding="utf-8") as f:
-            json.dump([player.__dict__ for player in players], f, ensure_ascii=False, indent=2)
+            json.dump(
+                [serialize_dataclass(player) for player in players],
+                f,
+                ensure_ascii=False,
+                indent=2
+            )

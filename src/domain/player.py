@@ -21,7 +21,7 @@ class Player:
     ryuohsen_class: Enums.RyuohsenClass
     junisen_class: Enums.JunisenClass
     danni: Enums.Danni
-    title: list
+    title: list[Enums.Title]
     affiliation: Optional[Enums.Affiliation]
     playing_style: Optional[Enums.PlayingStyle]
     player_category: Enums.PlayerCategory

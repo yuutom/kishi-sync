@@ -93,7 +93,6 @@ class Enums:
                     return status
             return cls.OTHER
 
-
     class ResultStatus(Enum):
         WIN = ("勝ち", "○")
         DEFEAT = ("負け", "●")
