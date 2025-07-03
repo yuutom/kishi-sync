@@ -202,7 +202,8 @@ def parse_player_detail(url: str) -> Player:
         nameRome=name_rome,
         image_url=image_url,
         birth_date=birth_date,
-        debut_date=None,
+        # TODO: 別ソースから取得してUPDATE
+        debut_date=birth_date,
         birth_place=birth_place,
         master=master,
         ryuohsen=ryuohsen_text,
@@ -211,8 +212,10 @@ def parse_player_detail(url: str) -> Player:
         junisen_class=parse_enum(junisen_text, Enums.JunisenClass),
         danni=danni,
         title=title,
-        affiliation=Enums.Affiliation.NONE,
-        playing_style=Enums.PlayingStyle.NONE,
+        # TODO: 別ソースから取得してUPDATE
+        affiliation=Enums.Affiliation.KANTOU,
+        # TODO: 別ソースから取得してUPDATE
+        playing_style=Enums.PlayingStyle.IBISHA,
         player_category=Enums.PlayerCategory.KISHI,
         is_active=True,
         result_from_kishi=result_from_kishi,
