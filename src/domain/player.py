@@ -7,7 +7,7 @@ from domain.record import Record
 
 @dataclass
 class Player:
-    id: int
+    id: str
     kishi_number: int
     nameKana: str
     nameRome: str

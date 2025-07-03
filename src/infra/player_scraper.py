@@ -196,7 +196,7 @@ def parse_player_detail(url: str) -> Player:
     print(name_kana)
 
     return Player(
-        id=kishi_number,
+        id=f"pro_{kishi_number}",
         kishi_number=kishi_number,
         nameKana=name_kana,
         nameRome=name_rome,

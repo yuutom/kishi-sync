@@ -2,7 +2,6 @@ from collections import defaultdict
 from domain.rating_record import RatingRecord
 from domain.enums import Enums
 from typing import List
-import json
 
 from repository.base import EnumMapper
 
@@ -36,8 +35,10 @@ def calculate_rating_history(games: List[dict]) -> List[RatingRecord]:
     for game in sorted_games:
         sp = game["sente_player_number"]
         spc = game["sente_player_category"]
+        spid = game["sente_player_id"]
         gp = game["gote_player_number"]
         gpc = game["gote_player_category"]
+        gpid = game["gote_player_id"]
         sr = actual_score(EnumMapper.from_int(Enums.ResultStatus, game["sente_player_result"]))
         gr = actual_score(EnumMapper.from_int(Enums.ResultStatus, game["gote_player_result"]))
         date = game["date"][0]
@@ -53,8 +54,8 @@ def calculate_rating_history(games: List[dict]) -> List[RatingRecord]:
         new_ra = ra + K * (sr - ea)
         new_rb = rb + K * (gr - eb)
 
-        history.append(RatingRecord(sp, spc, date, round(new_ra, 2), round(new_ra - ra, 2), gid))
-        history.append(RatingRecord(gp, gpc, date, round(new_rb, 2), round(new_rb - rb, 2), gid))
+        history.append(RatingRecord(sp, spc, spid, date, round(new_ra, 2), round(new_ra - ra, 2), gid))
+        history.append(RatingRecord(gp, gpc, gpid, date, round(new_rb, 2), round(new_rb - rb, 2), gid))
 
         ratings[sp] = new_ra
         ratings[gp] = new_rb

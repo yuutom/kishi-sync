@@ -9,6 +9,7 @@ from domain.enums import Enums
 class RatingRecord:
     player_number: int
     player_category: Enums.PlayerCategory
+    player_id: str
     date: str
     rating: float
     delta: float
