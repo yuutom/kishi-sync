@@ -53,8 +53,27 @@ class Enums:
         DUAL = "両刀"
 
     class PlayerCategory(Enum):
-        KISHI = "棋士"
-        JORYU = "女流棋士"
+        KISHI = ("棋士", "pro")
+        JORYU = ("女流棋士", "lady")
+        OTHER = ("その他", "other")
+
+        def __init__(self, label: str, symbol: str):
+            self.label = label
+            self.symbol = symbol
+
+        @classmethod
+        def from_symbol(cls, symbol: str):
+            for status in cls:
+                if status.symbol == symbol:
+                    return status
+            return cls.OTHER
+
+        @classmethod
+        def from_label(cls, label: str):
+            for status in cls:
+                if status.label == label:
+                    return status
+            return cls.OTHER
 
     class GameCategory(Enum):
         JUNI = ("順位戦・名人戦", "junni")
