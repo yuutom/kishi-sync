@@ -74,15 +74,15 @@ class Enums:
         ABEMA = ("ABEMAトーナメント", "abematv")
         SUNTORY = ("東西対抗戦", "suntory")
         OTHER = ("その他", "")
-        HAKUREI = ("白玲戦・女流順位戦", "hakurei"),
-        SEIREI = ("清麗戦", "seirei"),
-        MYNAVI = ("マイナビ女子オープン", "mynavi"),
-        JORYU_OUZA = ("女流王座戦", "jo_ouza"),
-        JORYU_MEIJIN = ("女流名人戦", "jo_meijin"),
-        JORYU_OUI = ("女流王位戦", "jo_oui"),
-        JORYU_OUSHOU = ("女流王将戦", "jo_oushou"),
-        TOUKA = ("倉敷藤花戦", "touka"),
-        SHIRATAKI = ("新人登竜門戦", "shirataki"),
+        HAKUREI = ("白玲戦・女流順位戦", "hakurei")
+        SEIREI = ("清麗戦", "seirei")
+        MYNAVI = ("マイナビ女子オープン", "mynavi")
+        JORYU_OUZA = ("女流王座戦", "jo_ouza")
+        JORYU_MEIJIN = ("女流名人戦", "jo_meijin")
+        JORYU_OUI = ("女流王位戦", "jo_oui")
+        JORYU_OUSHOU = ("女流王将戦", "jo_oushou")
+        TOUKA = ("倉敷藤花戦", "touka")
+        SHIRATAKI = ("新人登竜門戦", "shirataki")
 
         def __init__(self, label: str, symbol: str):
             self.label = label

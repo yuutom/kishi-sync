@@ -3,12 +3,11 @@ from dataclasses import is_dataclass, asdict
 from typing import List, Any
 from enum import Enum
 from typing import Type, TypeVar, Dict
-from domain.player import Player
 
 
-class PlayerRepository(ABC):
+class BaseRepository(ABC):
     @abstractmethod
-    def save(self, players: List[Player]) -> None:
+    def save(self, players: List[any]) -> None:
         pass
 
 

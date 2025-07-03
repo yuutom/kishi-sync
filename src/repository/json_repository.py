@@ -1,18 +1,17 @@
 import json
 from typing import List
 
-from domain.player import Player
-from repository.base import PlayerRepository, serialize_dataclass
+from repository.base import BaseRepository, serialize_dataclass
 
 
-class JSONPlayerRepository(PlayerRepository):
+class JSONRepository(BaseRepository):
     def __init__(self, output_path: str = "players.json"):
         self.output_path = output_path
 
-    def save(self, players: List[Player]) -> None:
+    def save(self, targets: List[any]) -> None:
         with open(self.output_path, "w", encoding="utf-8") as f:
             json.dump(
-                [serialize_dataclass(player) for player in players],
+                [serialize_dataclass(target) for target in targets],
                 f,
                 ensure_ascii=False,
                 indent=2
