@@ -16,7 +16,7 @@ def main():
     scrape_and_save_games(repo_for_result)
 
     # レーティング計算
-    repo_for_raging = JSONRepository("raging_history.json")
+    repo_for_raging = JSONRepository("rating_history.json")
     with open("game_results.json", encoding="utf-8") as f:
         game_data = json.load(f)
 

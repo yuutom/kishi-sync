@@ -54,8 +54,44 @@ def calculate_rating_history(games: List[dict]) -> List[RatingRecord]:
         new_ra = ra + K * (sr - ea)
         new_rb = rb + K * (gr - eb)
 
-        history.append(RatingRecord(sp, spc, spid, date, round(new_ra, 2), round(new_ra - ra, 2), gid))
-        history.append(RatingRecord(gp, gpc, gpid, date, round(new_rb, 2), round(new_rb - rb, 2), gid))
+        history.append(RatingRecord(
+            player_number=sp,
+            player_category=spc,
+            player_id=spid,
+            player_name=game["sente_player_name"],
+            opponent_number=gp,
+            opponent_category=gpc,
+            opponent_id=gpid,
+            opponent_name=game["gote_player_name"],
+            year=game["year"],
+            date=date,
+            rating=round(new_ra, 2),
+            delta=round(new_ra - ra, 2),
+            opponent_rating=round(new_rb, 2),
+            opponent_rating_delta=round(new_rb - rb, 2),
+            result_status=game["sente_player_result"],
+            game_id=gid,
+            game_name=game["game_name"])
+        )
+        history.append(RatingRecord(
+            player_number=gp,
+            player_category=gpc,
+            player_id=gpid,
+            player_name=game["gote_player_name"],
+            opponent_number=sp,
+            opponent_category=spc,
+            opponent_id=spid,
+            opponent_name=game["sente_player_name"],
+            year=game["year"],
+            date=date,
+            rating=round(new_rb, 2),
+            delta=round(new_rb - rb, 2),
+            opponent_rating=round(new_ra, 2),
+            opponent_rating_delta=round(new_ra - ra, 2),
+            result_status=game["gote_player_result"],
+            game_id=gid,
+            game_name=game["game_name"])
+        )
 
         ratings[sp] = new_ra
         ratings[gp] = new_rb

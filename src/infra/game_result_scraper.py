@@ -58,6 +58,8 @@ def parse_game_result(url: str) -> List[Game]:
             continue
 
         game_name = cols[0].get_text(strip=True)
+        sente_player_name = cols[2].get_text(strip=True)
+        gote_player_name = cols[3].get_text(strip=True)
         a_tag = cols[0].find("a")
         if a_tag and a_tag.get("href"):
             category_symbol = a_tag["href"].strip("/").split("/")[-1]
@@ -89,14 +91,17 @@ def parse_game_result(url: str) -> List[Game]:
             game_name=game_name,
             game_category=game_category,
             sente_player_number=sente_number,
+            sente_player_name=sente_player_name,
             sente_player_category=sente_category,
             sente_player_id=sente_category.symbol + "_" + str(sente_number),
             sente_player_result=sente_result,
             gote_player_number=gote_number,
+            gote_player_name=gote_player_name,
             gote_player_category=gote_category,
             gote_player_id=gote_category.symbol + "_" + str(gote_number),
             gote_player_result=gote_result,
-            date=current_date
+            date=current_date,
+            year=year,
         ))
         game_id += 1
 
