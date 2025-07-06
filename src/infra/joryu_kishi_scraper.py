@@ -92,8 +92,6 @@ def parse_joryu_kishi_detail(url: str) -> Player:
         danni=danni,
         title=title,
         affiliation=affiliation,
-        # TODO: 別ソースから取得してUPDATE
-        playing_style=Enums.PlayingStyle.IBISHA,
         player_category=Enums.PlayerCategory.JORYU,
         is_active=True,
     )

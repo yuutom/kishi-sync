@@ -11,6 +11,14 @@ class Enums:
         OUSHO = "王将"
         OUZA = "王座"
         KISEI = "棋聖"
+        SEIREI = "清麗"
+        JOOH = "女王"
+        JORYU_OUZA = "女流王座"
+        JORYU_MEIJIN = "女流名人"
+        JORYU_OUI = "女流王位"
+        TOUKA = "倉敷藤花"
+        HAKUREI = "白玲"
+        JORYU_OUSHO = "女流王将"
 
     class JunisenClass(Enum):
         MEIJIN = "名人"
@@ -52,12 +60,6 @@ class Enums:
         KANTOU = "関東"
         KANSAI = "関西"
         NONE = "なし"
-
-    class PlayingStyle(Enum):
-        NONE = "なし"
-        IBISHA = "居飛車"
-        HURIBISHA = "振り飛車"
-        DUAL = "両刀"
 
     class PlayerCategory(Enum):
         KISHI = ("棋士", "pro")

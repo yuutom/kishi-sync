@@ -45,7 +45,7 @@ def extract_title(soup) -> list[Enums.Title]:
     return []
 
 
-def parse_player_detail(url: str) -> Player:
+def parse_kishi_detail(url: str) -> Player:
     res = requests.get(url)
     soup = BeautifulSoup(res.content, "html.parser")
 
@@ -94,7 +94,6 @@ def parse_player_detail(url: str) -> Player:
         danni=danni,
         title=title,
         affiliation=affiliation,
-        playing_style=Enums.PlayingStyle.IBISHA,
         player_category=Enums.PlayerCategory.KISHI,
         is_active=True,
     )

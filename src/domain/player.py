@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 from domain.enums import Enums
-from domain.record import Record
 
 
 @dataclass
@@ -23,6 +22,5 @@ class Player:
     danni: Enums.Danni
     title: list[Enums.Title]
     affiliation: Optional[Enums.Affiliation]
-    playing_style: Optional[Enums.PlayingStyle]
     player_category: Enums.PlayerCategory
     is_active: bool

@@ -5,7 +5,10 @@ BASE_URL = "https://www.shogi.or.jp"
 
 
 def extract_active_kishi_urls_from_list_page(symbol: str) -> list[str]:
-    res = requests.get("https://www.shogi.or.jp/player/lady.html")
+    base_url = "https://www.shogi.or.jp/player/"
+    if symbol == "lady":
+        base_url = base_url + "lady.html"
+    res = requests.get(base_url)
     res.encoding = "utf-8"
     soup = BeautifulSoup(res.text, "html.parser")
     urls = []
