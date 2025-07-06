@@ -26,6 +26,3 @@ class Player:
     playing_style: Optional[Enums.PlayingStyle]
     player_category: Enums.PlayerCategory
     is_active: bool
-    result_from_kishi: list
-    record: Record
-

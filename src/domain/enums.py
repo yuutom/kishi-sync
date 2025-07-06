@@ -102,6 +102,7 @@ class Enums:
         JORYU_OUSHOU = ("女流王将戦", "jo_oushou")
         TOUKA = ("倉敷藤花戦", "touka")
         SHIRATAKI = ("新人登竜門戦", "shirataki")
+        OUSHOU = ("王将戦", "oushou")
 
         def __init__(self, label: str, symbol: str):
             self.label = label
