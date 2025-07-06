@@ -40,6 +40,13 @@ class Enums:
         DAN8 = "八段"
         DAN9 = "九段"
         NONE = "なし"
+        JORYU_DAN5 = "女流五段"
+        JORYU_DAN4 = "女流四段"
+        JORYU_DAN3 = "女流三段"
+        JORYU_DAN2 = "女流二段"
+        JORYU_DAN0 = "女流初段"
+        JORYU_KTY1 = "女流1級"
+        JORYU_KTY2 = "女流2級"
 
     class Affiliation(Enum):
         KANTOU = "関東"
